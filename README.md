@@ -12,4 +12,4 @@ or you can choose in <h3>application.properties
 3. if you'd choosen 
 application.properties
 => #spring.datasource.initialization-mode=NEVER,
-<br/>then revert it.
+<br/>then revert it(remove '#' ok? ).
