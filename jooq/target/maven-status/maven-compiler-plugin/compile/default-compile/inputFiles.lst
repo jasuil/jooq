@@ -1,10 +1,7 @@
-D:\java_workspace4\jooq\src\main\java\com\example\demo\repo\PostsRepository.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\Public.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\dto\JasuilDTO.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\tables\Posts.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\Indexes.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\tables\Comments.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\DefaultCatalog.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\Keys.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\genetate\Tables.java
-D:\java_workspace4\jooq\src\main\java\com\example\demo\JooqApplication.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/tables/Browserverification.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/Keys.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/example/demo/JooqApplication.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/DefaultCatalog.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/Tables.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/tables/records/BrowserverificationRecord.java
+/Users/user/Documents/myExam/jooq/src/main/java/com/hellokoding/jooq/model/Test.java

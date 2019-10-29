@@ -43,6 +43,11 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>6.0.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -64,150 +69,123 @@
 		</dependency>
 	</dependencies>
 
-	
-			
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<version>3.10.0</version>
+
+				<!-- The plugin should hook into the generate goal -->
 				<executions>
 					<execution>
-						<phase>generate-sources</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>generate</goal>
 						</goals>
-						<configuration>
-							<sources>
-								<source>src/generated/java</source>
-							</sources>
-						</configuration>
 					</execution>
 				</executions>
+
+				<dependencies/>
+
+				<configuration>
+					<jdbc>
+						<driver>${jdbc.driver}</driver>
+						<url>${jdbc.url}</url>
+						<user>${jdbc.user}</user>
+						<password>${jdbc.password}</password>
+					</jdbc>
+
+					<generator>
+						<database>
+							<name>org.jooq.util.mysql.MySQLDatabase</name>
+							<includes>.*</includes>
+							<excludes></excludes>
+							<inputSchema>test</inputSchema>
+						</database>
+						<target>
+							<packageName>com.hellokoding.jooq.model</packageName>
+							<directory>src/main/java</directory>
+						</target>
+					</generator>
+				</configuration>
 			</plugin>
+
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<systemProperties>
+						<systemProperty>
+							<key>jdbc.driver</key>
+							<value>${jdbc.driver}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>jdbc.user</key>
+							<value>${jdbc.user}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>jdbc.password</key>
+							<value>${jdbc.password}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>jdbc.url</key>
+							<value>${jdbc.url}</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
-<profiles>
+	<profiles>
 		<profile>
-			<id>generate</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>generate-jooq-utils</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-								<inherited>false</inherited>
-								<!--<configuration>-->
-									<!--<includes>-->
-										<!--<inclue>sample/jooq/util/**</inclue>-->
-									<!--</includes>-->
-								<!--</configuration>-->
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>sql-maven-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>com.h2database</groupId>
-								<artifactId>h2</artifactId>
-								<version>${h2.version}</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<driver>${spring.datasource.driver-class-name}</driver>
-							<url>${spring.datasource.url}</url>
-							<username>${spring.datasource.username}</username>
-							<password>${spring.datasource.password}</password>
-							<!-- <srcFiles>
-								<srcFile>${basedir}/src/main/resources/schema.sql</srcFile>
-							</srcFiles> -->
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>1.0.0</version>
-						<executions>
-							<execution>
-								<phase>initialize</phase>
-								<goals>
-									<goal>read-project-properties</goal>
-								</goals>
-								<configuration>
-									<files>
-										<file>src/main/resources/application.properties</file>
-									</files>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.jooq</groupId>
-						<artifactId>jooq-codegen-maven</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>com.h2database</groupId>
-								<artifactId>h2</artifactId>
-								<version>${h2.version}</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<jdbc>
-								<driver>${spring.datasource.driver-class-name}</driver>
-								<url>${spring.datasource.url}</url>
-								<user>${spring.datasource.username}</user>
-								<password>${spring.datasource.password}</password>
-							</jdbc>
-							<generator>								
-								<database>
-									<name>org.jooq.meta.h2.H2Database</name>
-									<includes>.*</includes>
-									<excludes />
-									<inputSchema>PUBLIC</inputSchema>
-								</database>
-
-								<target>
-									<packageName>com.example.demo.genetate</packageName>
-									<directory>${basedir}/src/main/java</directory>
-								</target>
-								<generate>
-									<records>false</records>
-								</generate>
-							</generator>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<jdbc.user>root</jdbc.user>
+				<jdbc.password>123!</jdbc.password>
+				<jdbc.url>jdbc:mysql://localhost:3306/test?serverTimezone=UTC</jdbc.url>
+				<jdbc.driver>com.mysql.cj.jdbc.Driver</jdbc.driver>
+			</properties>
 		</profile>
 	</profiles>
+
+	<!--			-->
+<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.codehaus.mojo</groupId>-->
+<!--				<artifactId>build-helper-maven-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<phase>generate-sources</phase>-->
+<!--						<goals>-->
+<!--							<goal>add-source</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<sources>-->
+<!--								<source>src/generated/java</source>-->
+<!--							</sources>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</build>-->
 	
 <!-- <profiles>
     <profile>
