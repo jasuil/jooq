@@ -1,0 +1,3 @@
+DROP SCHEMA jooq_test IF EXISTS;
+
+CREATE SCHEMA jooq_test;
